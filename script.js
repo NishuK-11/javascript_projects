@@ -51,7 +51,7 @@ function checkGuess() {
 // End the game and prepare for reset
 function setGameOver() {
   guessField.disabled = true;
-  guessSubmit.disabled = false;
+  guessSubmit.disabled = true;
 
   const resetContainer = document.querySelector(".gameOverOptions");
   resetContainer.style.display = "block";
