@@ -30,5 +30,9 @@
 
 export const lightTheme = {
   bg: "#ffffff",
-  text_primary: "#404040"
+  text_primary: "#404040",
+  primary: "#007AFF",
+  text_secondary: "#4d4c4c",
+   black: "#000000",
+   card: "#FFFFFF",
 };

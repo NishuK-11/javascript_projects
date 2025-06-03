@@ -54,6 +54,11 @@ import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import { lightTheme } from "./utils/Themes";
 import { BrowserRouter } from "react-router-dom";
 import Authentication from "./pages/Authentication";
+import { useState } from "react";
+import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import { Route, Routes } from "react-router-dom";
+import Workouts from "./pages/Workouts";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -76,14 +81,26 @@ const Container = styled.div`
 `;
 
 const App = () => {
+  const [user,setUser] = useState(true);
   return (
     <ThemeProvider theme={lightTheme}>
       <>
         <BrowserRouter>
           <GlobalStyle />
-          <Container>
-            <Authentication />
-          </Container>
+          {user?(
+            <Container>
+              <Navbar />
+              <Routes>
+                <Route path="/" exact element={<Dashboard />} />
+                <Route path="/workouts" element={<Workouts />} />
+                {/* Add more routes as needed */}
+              </Routes>
+            </Container>
+          ) : (
+            <Container>
+              <Authentication />
+            </Container>
+          )}
         </BrowserRouter>
       </>
     </ThemeProvider>
