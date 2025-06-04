@@ -59,6 +59,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import { Route, Routes } from "react-router-dom";
 import Workouts from "./pages/Workouts";
+import { useSelector } from "react-redux";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -81,15 +82,15 @@ const Container = styled.div`
 `;
 
 const App = () => {
-  const [user,setUser] = useState(true);
+  const {currentUser} = useSelector ((state) => state.user);
   return (
     <ThemeProvider theme={lightTheme}>
       <>
         <BrowserRouter>
           <GlobalStyle />
-          {user?(
+          {currentUser?(
             <Container>
-              <Navbar />
+              <Navbar currentUser = {currentUser} />
               <Routes>
                 <Route path="/" exact element={<Dashboard />} />
                 <Route path="/workouts" element={<Workouts />} />

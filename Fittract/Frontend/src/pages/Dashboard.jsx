@@ -3,22 +3,18 @@ import {
   FitnessCenterRounded,
   LocalFireDepartmentRounded,
   TimelineRounded,
-  Work,
 } from "@mui/icons-material";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import CountsCard from '../components/cards/CountsCard'
 import { countsData } from '../utils/data'
 import WeeklyStatCards from '../components/cards/WeeklyStatCards'
 import CategoryChart from "../components/cards/CategoryChart";
-import AddWorkout from "../components/AddWorkout";
-import Card from "@mui/material/Card";
-
 import WorkOutCard from "../components/cards/WorkOutCard";
-
-
-// ✅ iconName → icon component mapping
+import AddWorkout from "../components/AddWorkout";
+import {addWorkout, getDashboardDetails,getWorkouts} from "../api";
+import { useState } from "react";
 const iconMap = {
   LocalFireDepartmentRounded: <LocalFireDepartmentRounded sx={{ fontSize: "26px", color: "inherit" }} />,
   FitnessCenterRounded: <FitnessCenterRounded sx={{ fontSize: "26px", color: "inherit" }} />,
@@ -82,86 +78,90 @@ const CardWrapper = styled.div`
 `
 
 const Dashboard = () => {
-  const [workout, setWorkout] = React.useState("");
-    const data = {
-    totalCaloriesBurnt: 13500,
-    totalWorkouts: 6,
-    avgCaloriesBurntPerWorkout: 2250,
-    totalWeeksCaloriesBurned:{
-        weeks:["17th","18th","19th","20th","21st","22nd"],
-        caloriesBurned:[15000, 16000, 17000, 18000, 19000, 20000]
-    },
-    pieChartData: [
-        {
-            id:0,
-            value:6000,
-            label:"Legs",
-        },
-        {
-            id:1,
-            value:4000,
-            label:"Hands",
-        },
-        {
-            id:2,
-            value:3000,
-            label:"Back",
-        },
-        {
-            id:3,
-            value:1500,
-            label:"Chest",
-        },
-        {
-            id:4,
-            value:2500,
-            label:"Shoulders",
-        },
-        {
-            id:5,
-            value:3000,
-            label:"ABS",
-        },
-        {
-            id:6,
-            value:2000,
-            label:"Arms",
-        }
-    ]
-}
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState();
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [todaysWorkouts, setTodaysWorkouts] = useState([]);
+  const [workout, setWorkout] = useState(`#Legs
+-Back Squat
+-5 setsX15 reps
+-30 kg
+-10 min`);
 
+  const dashboardData = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("fittrack-app-token");
+    await getDashboardDetails(token).then((res) => {
+      setData(res.data);
+      setLoading(false);
+    });
+  };
+
+  const getTodaysWorkout = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("fittrack-app-token");
+    await getWorkouts(token, "").then((res) => {
+      setTodaysWorkouts(res?.data?.todaysWorkouts || []);
+      setLoading(false);
+    });
+  };
+
+  const addNewWorkout = async () => {
+    setButtonLoading(true);
+    const token = localStorage.getItem("fittrack-app-token");
+    await addWorkout(token, { workoutString: workout })
+      .then(() => {
+        dashboardData();
+        getTodaysWorkout();
+        setButtonLoading(false);
+      })
+      .catch((err) => {
+        alert(err);
+        setButtonLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    dashboardData();
+    getTodaysWorkout();
+  }, []);
+
+  useEffect(() => {
+    dashboardData();
+    getTodaysWorkout();
+  }, []);
   return (
     <Container>
       <Wrapper>
         <Title>Dashboard</Title>
         <FlexWrap>
-            {countsData.map((item)=>(
-                <CountsCard
-              key={item.key}
-              item={{
-                ...item,
-                icon: iconMap[item.iconName], // ✅ inject real icon component here
-              }}
-              data={data}
-            />
+          {countsData.map((item) => (
+            <CountsCard item={{ ...item, icon: iconMap[item.iconName] }} data={data} />
           ))}
         </FlexWrap>
-        <FlexWrap>
-            <WeeklyStatCards data={data} />
-            <CategoryChart data = {data} />
 
-            <AddWorkout workout={workout} setWorkout={setWorkout} />
+        <FlexWrap>
+          <WeeklyStatCards data={data} />
+          <CategoryChart data={data} />
+          <AddWorkout
+            workout={workout}
+            setWorkout={setWorkout}
+            addNewWorkout={addNewWorkout}
+            buttonLoading={buttonLoading}
+          />
         </FlexWrap>
+
         <Section>
           <Title>Todays Workouts</Title>
           <CardWrapper>
-            <WorkOutCard />
+            {todaysWorkouts.map((workout) => (
+              <WorkOutCard workout={workout} />
+            ))}
           </CardWrapper>
         </Section>
       </Wrapper>
     </Container>
-  )
-}
+  );
+};
 
-export default Dashboard
-
+export default Dashboard;
