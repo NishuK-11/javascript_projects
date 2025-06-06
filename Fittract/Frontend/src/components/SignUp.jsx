@@ -51,11 +51,12 @@ const SignUp = () => {
 
     try {
       const res = await UserSignUp({ name, email, password })
+      
       dispatch(loginSuccess(res.data))
       alert("Account Created Successfully")
     } catch (err) {
-      console.error(err)
-      alert(err.response?.data?.message || "Something went wrong")
+      console.error("SIGNUP ERROR",err)
+      alert(err.response?.data?.message || err.message|| "Something went wrong")
     } finally {
       setLoading(false)
       setButtonDisabled(false)
@@ -83,8 +84,8 @@ const SignUp = () => {
         />
         <TextInput
           label="Password"
-          type="password"
           placeholder="Enter your password"
+          password={true}
           value={password}
           handleChange={(e) => setPassword(e.target.value)} // ✅ fixed typo
         />

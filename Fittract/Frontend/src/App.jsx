@@ -54,7 +54,6 @@ import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import { lightTheme } from "./utils/Themes";
 import { BrowserRouter } from "react-router-dom";
 import Authentication from "./pages/Authentication";
-import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import { Route, Routes } from "react-router-dom";

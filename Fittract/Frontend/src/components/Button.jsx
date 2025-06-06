@@ -38,8 +38,8 @@ const ButtonStyled = styled.div`
     cursor: not-allowed;
   `}
 
-  ${({ isLoading }) =>
-    isLoading &&
+  ${({ $isLoading }) =>
+    $isLoading &&
     `
     opacity: 0.8;
     cursor: not-allowed;
@@ -88,9 +88,9 @@ const Button = ({
   return (
     <ButtonStyled
       onClick={() => !isDisabled && !isLoading && onClick()}
-      isDisabled={isDisabled}
+      $isDisabled={isDisabled}
       type={type}
-      isLoading={isLoading}
+      $isLoading={isLoading}
       flex={flex}
       small={small}
       outlined={outlined}
@@ -103,7 +103,7 @@ const Button = ({
       )}
       {leftIcon}
       {text}
-      {isLoading && <> . . .</>}
+      {isLoading && <span> . . .</span>}
       {rightIcon}
     </ButtonStyled>
   );

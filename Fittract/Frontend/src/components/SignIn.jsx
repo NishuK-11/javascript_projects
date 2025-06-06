@@ -75,7 +75,7 @@ const SignIn = () => {
                    placeholder="Enter your password"
                    value= {password}
                    handleChange={(e)=>setPassword(e.target.value)}
-                   type="password"
+                   password={true}
     />
     <Button 
       text="SignIn"
