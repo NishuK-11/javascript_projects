@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Editor config
+.vscode/
+.idea/
+
+# Output
+dist/
+build/

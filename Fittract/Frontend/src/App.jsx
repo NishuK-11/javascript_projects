@@ -81,7 +81,24 @@ const Container = styled.div`
 `;
 
 const App = () => {
+  //Checks if a user is logged in (i.e., currentUser exists in Redux state).
   const {currentUser} = useSelector ((state) => state.user);
+
+//   App starts and applies the light theme.
+
+// Checks currentUser from Redux:
+
+// If user is authenticated:
+
+// Show Navbar, Dashboard, or Workouts based on route.
+
+// If user is not authenticated:
+
+// Show Authentication page.
+
+// Routing is handled by React Router.
+
+// Theming is handled by styled-components.
   return (
     <ThemeProvider theme={lightTheme}>
       <>
@@ -97,6 +114,7 @@ const App = () => {
               </Routes>
             </Container>
           ) : (
+            // If currentUser is not present (user is not logged in):
             <Container>
               <Authentication />
             </Container>
