@@ -38,3 +38,12 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+
+// | Action  | Where It Happens                            | What Happens                              |
+// | ------- | ------------------------------------------- | ----------------------------------------- |
+// | Sign In | `UserSignIn` API + `dispatch(loginSuccess)` | Stores user/token in Redux & localStorage |
+// | Sign Up | `UserSignUp` API                            | Sends data to backend                     |
+// | Navbar  | `useSelector(user)`                         | Shows Avatar & Logout                     |
+// | Logout  | `dispatch(logout())`                        | Clears user info from everywhere          |
+// | Persist | redux-persist                               | Keeps user logged in after refresh        |

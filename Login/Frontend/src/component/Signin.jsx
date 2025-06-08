@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
@@ -53,50 +53,34 @@ const Input = styled.input`
 
 `
 const Button = styled.button`
-    color:black;
     background-color:white;
     position:absolute;
-    margin-top:20%;
+    margin-top:230px;
     padding:10px 30px;
-    margin-left:160px;
     border-radius:10px;
 `
-
 const Login = () => {
-  const [name,setName] = useState('');
   const [email,setEmail] =useState('');
   const [password,setPassword] = useState('');
-  const [isLoggedIn,setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  // Check if user already logged in from localStorage
-  useEffect(()=>{
-    const loggedIn = localStorage.getItem('isLoggedIn');
-    if(loggedIn==='true'){
-        setIsLoggedIn(true);
-        alert("User already logged in!");
-    }
-  },[])
 
-  const handleLogin = async()=>{
+  const handlesignin = async()=>{
     try{
-      console.log({ name, email, password });
+      console.log({email, password });
 // This line sends a POST request to your Node.js backend API at http://localhost:5000/register.
 
 // Here's what each option means:
-      const response = await fetch("http://localhost:5000/register",{
+      const response = await fetch("http://localhost:5000/login",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
         },
-        body:JSON.stringify({name,email,password})
+        body:JSON.stringify({email,password})
       });
       const data = await response.json();
       if(response.ok){
         alert(data.message);//login successful
-
-        setIsLoggedIn(true);
-        localStorage.setItem("isLoggedIn", "true");
-        
+        navigate('/');
       }else{
         alert(data.message);//invalid credentials
       }
@@ -111,21 +95,8 @@ const Login = () => {
     <>
         <Container>
           <Card>
-          {isLoggedIn ?(
-            <>
-            <Title>User Already Logged In</Title>
-            <Button onClick={()=>navigate('/signin')}>Go to signin</Button>
-            </>
-          ):(
-            <>
-               <Title>Login Here</Title>
-            <div>
-              <Label>
-                  Name</Label>
-                  <Input type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}/>
-              </div>
+            <Title>Login Here</Title>
+           
               <div>
               <Label>
                   Password</Label>
@@ -140,12 +111,8 @@ const Login = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}/>
               </div>
-         
-          <Button onClick={handleLogin}>Done</Button>
-         </>
-          )}
-         
-             </Card>
+          </Card>
+          <Button onClick={handlesignin}>Done</Button>
       </Container>
       
     </>

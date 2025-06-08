@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+// 🔁 Redux Toolkit — to store user data globally
 
+// 💾 Redux Persist — to remember the user even after refresh
+
+// 🌐 Axios — to talk to the backend API
 const initialState = {
   currentUser: null,
 };
